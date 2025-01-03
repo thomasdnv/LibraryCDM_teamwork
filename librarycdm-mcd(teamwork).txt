@@ -1,0 +1,94 @@
+CREATE TABLE Status_(
+   ID VARCHAR(76),
+   disponible LOGICAL,
+   Date_emprunt DATE,
+   Date_rendu DATE,
+   ID_client VARCHAR(76) NOT NULL,
+   PRIMARY KEY(ID)
+);
+
+CREATE TABLE Catégory(
+   ID VARCHAR(76),
+   Type_catégorie VARCHAR(100),
+   PRIMARY KEY(ID)
+);
+
+CREATE TABLE Genre(
+   ID VARCHAR(76),
+   Type_genre VARCHAR(100),
+   PRIMARY KEY(ID)
+);
+
+CREATE TABLE Role(
+   ID VARCHAR(76),
+   Bibliothécaire LOGICAL,
+   Client LOGICAL,
+   Auteur LOGICAL,
+   PRIMARY KEY(ID)
+);
+
+CREATE TABLE Admin(
+   ID_Admin VARCHAR(76),
+   Email VARCHAR(100),
+   mot_de_passe VARCHAR(50),
+   PRIMARY KEY(ID_Admin)
+);
+
+CREATE TABLE Users(
+   ID VARCHAR(76),
+   prénom VARCHAR(50),
+   nom VARCHAR(50),
+   ID_Admin VARCHAR(76) NOT NULL,
+   ID_1 VARCHAR(76) NOT NULL,
+   PRIMARY KEY(ID),
+   UNIQUE(ID_Admin),
+   UNIQUE(ID_1),
+   FOREIGN KEY(ID_Admin) REFERENCES Admin(ID_Admin),
+   FOREIGN KEY(ID_1) REFERENCES Role(ID)
+);
+
+CREATE TABLE Book_(
+   ID VARCHAR(76),
+   titre VARCHAR(100),
+   Publication_date DATE,
+   ID_author VARCHAR(76) NOT NULL,
+   ID_genre VARCHAR(76) NOT NULL,
+   ID_status VARCHAR(76) NOT NULL,
+   ID_1 VARCHAR(76) NOT NULL,
+   ID_2 VARCHAR(76) NOT NULL,
+   PRIMARY KEY(ID),
+   FOREIGN KEY(ID_1) REFERENCES Status_(ID),
+   FOREIGN KEY(ID_2) REFERENCES Role(ID)
+);
+
+CREATE TABLE Emprunter(
+   ID VARCHAR(76),
+   ID_1 VARCHAR(76),
+   PRIMARY KEY(ID, ID_1),
+   FOREIGN KEY(ID) REFERENCES Status_(ID),
+   FOREIGN KEY(ID_1) REFERENCES Role(ID)
+);
+
+CREATE TABLE Trier(
+   ID VARCHAR(76),
+   ID_1 VARCHAR(76),
+   PRIMARY KEY(ID, ID_1),
+   FOREIGN KEY(ID) REFERENCES Book_(ID),
+   FOREIGN KEY(ID_1) REFERENCES Catégory(ID)
+);
+
+CREATE TABLE Ajouter_supprimer(
+   ID VARCHAR(76),
+   ID_1 VARCHAR(76),
+   PRIMARY KEY(ID, ID_1),
+   FOREIGN KEY(ID) REFERENCES Book_(ID),
+   FOREIGN KEY(ID_1) REFERENCES Role(ID)
+);
+
+CREATE TABLE Trier_par(
+   ID VARCHAR(76),
+   ID_1 VARCHAR(76),
+   PRIMARY KEY(ID, ID_1),
+   FOREIGN KEY(ID) REFERENCES Catégory(ID),
+   FOREIGN KEY(ID_1) REFERENCES Genre(ID)
+);
